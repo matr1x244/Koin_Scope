@@ -10,11 +10,18 @@ import android.widget.Toast
 import com.geekbrains.koinscope.R
 import com.geekbrains.koinscope.data.SomeDepend
 import org.koin.android.ext.android.getKoin
+import org.koin.android.ext.android.inject
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.getOrCreateScope
 import org.koin.core.qualifier.named
+import org.koin.core.scope.Scope
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), KoinScopeComponent {
 
-    val scope by lazy { getKoin().getOrCreateScope("", named("mainScope")) }
+//    val scope by lazy { getKoin().getOrCreateScope("", named("mainScope")) }
+
+    override val scope: Scope by getOrCreateScope()
+    private val someDepend: SomeDepend by inject()
 
     private lateinit var textViewScope : TextView
 
@@ -27,7 +34,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun koinStart() {
-        scope.get<SomeDepend>().koinScope()
+//        scope.get<SomeDepend>().koinScope()
+        someDepend.koinScope()
     }
 
     override fun onDestroy() {
